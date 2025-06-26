@@ -90,8 +90,8 @@ Git
 Installation
 Clone the repository:
 
-git clone https://github.com/YourGitHubUsername/real-estate-hub.git
-cd real-estate-hub
+https://github.com/rajahassan38201/Ai-based-Real-Estate-Project
+cd Ai-based-Real-Estate-Project
 
 (Replace YourGitHubUsername with your actual GitHub username and real-estate-hub with your repository name if different.)
 
