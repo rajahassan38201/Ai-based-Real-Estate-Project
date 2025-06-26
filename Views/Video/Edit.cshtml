@@ -1,0 +1,51 @@
+﻿@model PakProperties.Models.Video
+
+@{
+    ViewData["Title"] = "Edit Video";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<div class="container mt-5 animate__animated animate__zoomIn">
+    <h1 class="text-center text-primary fw-bold mb-4">Edit Video</h1>
+    <form asp-action="Edit" asp-controller="Video" method="post" enctype="multipart/form-data" class="border p-4 rounded shadow">
+        <input type="hidden" asp-for="Id" />
+
+        <!-- Type Selection -->
+        <div class="mb-3">
+            <label for="type" class="form-label fw-bold">Type</label>
+            <select name="type" id="type" class="form-control" asp-for="Type" required>
+                <option value="House">House</option>
+                <option value="Flats">Flats</option>
+                <option value="Commercial">Commercial</option>
+                <option value="Plots">Plots</option>
+            </select>
+        </div>
+
+        <!-- Location Input -->
+        <div class="mb-3">
+            <label for="location" class="form-label fw-bold">Location</label>
+            <input type="text" name="location" id="location" asp-for="Location" class="form-control" required />
+        </div>
+
+        <!-- Description Input -->
+        <div class="mb-3">
+            <label for="description" class="form-label fw-bold">Description</label>
+            <textarea name="description" id="description" rows="4" asp-for="Description" class="form-control" required></textarea>
+        </div>
+
+        <!-- Video Preview -->
+        @* <div class="mb-3"> *@
+        @*     <label class="form-label fw-bold">Current Video</label> *@
+        @*     <video src="@Url.Content(Model.FilePath)" class="w-100 rounded shadow" controls></video> *@
+        @* </div> *@
+
+        <!-- Video File Input -->
+        <div class="mb-3">
+            <label for="videoFile" class="form-label fw-bold">Replace Video (Optional)</label>
+            <input type="file" name="videoFile" id="videoFile" accept="video/*" class="form-control" />
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+    </form>
+</div>

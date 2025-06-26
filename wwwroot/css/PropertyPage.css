@@ -1,0 +1,166 @@
+﻿/* ================================
+   ✅ Container & Layout Styling
+=================================== */
+.filter-form-container {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 12px;
+    padding: 30px;
+    margin: 40px auto;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    max-width: 1200px;
+}
+
+    .filter-form-container label {
+        color: #333;
+        font-weight: 600;
+    }
+
+    /* ================================
+   ✅ Input & Select Styles
+=================================== */
+    .filter-form-container .form-control,
+    .filter-form-container .form-select {
+        border-radius: 8px;
+        border: 1px solid #ced4da;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .filter-form-container .form-control:focus,
+        .filter-form-container .form-select:focus {
+            border-color: #28a745 !important;
+            box-shadow: 0 0 0 0.15rem rgba(40, 167, 69, 0.25) !important;
+            outline: none;
+        }
+/* ================================
+   ✅ Custom Green Radio Buttons
+================================= */
+
+.form-check-input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #28a745;
+    border-radius: 50%;
+    background-color: #fff;
+    position: relative;
+    margin-top: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    vertical-align: middle;
+}
+
+    .form-check-input[type="radio"]::before {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 8px;
+        height: 8px;
+        background-color: #28a745;
+        border-radius: 50%;
+        transform: scale(0);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .form-check-input[type="radio"]:checked::before {
+        transform: scale(1);
+    }
+
+    /* ✅ Green text and bold when radio is selected */
+    .form-check-input[type="radio"]:checked + .form-check-label {
+        color: #28a745;
+        font-weight: bold;
+    }
+
+/* General label styling */
+.form-check-label {
+    margin-left: 6px;
+    margin-right: 20px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+
+
+/* ================================
+   ✅ Submit Button Styling
+=================================== */
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    font-weight: bold;
+    border-radius: 8px;
+}
+
+    .btn-success:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
+
+/* ================================
+   ✅ Responsive Adjustments
+=================================== */
+@media (max-width: 768px) {
+    .filter-form-container {
+        padding: 20px;
+    }
+
+    .form-check-label {
+        margin-bottom: 10px;
+    }
+
+    .col-md-3,
+    .col-md-6 {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+/* ================================
+   ✅ Filter Button + ❌ Reset Icon
+=================================== */
+.filter-button-wrapper {
+    position: relative;
+    width: 100%;
+    display: inline-block;
+}
+
+.filter-button {
+    width: 100%;
+    padding-right: 2.5rem;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease-in-out;
+    border: 2px solid #28a745;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+    .filter-button:hover {
+        box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.3);
+        border-color: #1e7e34;
+    }
+
+.reset-icon {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color: red;
+    z-index: 2;
+    transition: all 0.3s ease-in-out;
+}
+
+    .reset-icon:hover {
+        color: #ffcccc;
+    }
+
+.filter-button-wrapper:hover .reset-icon:hover + .filter-button,
+.filter-button-wrapper .reset-icon:hover ~ .filter-button {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.3);
+}

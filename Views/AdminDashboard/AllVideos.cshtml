@@ -1,0 +1,62 @@
+@model IEnumerable<PakProperties.Models.Video>
+
+@{
+    ViewData["Title"] = "Video Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<p>
+    <a class="btn btn-outline-dark mt-3" asp-action="UploadVideo" asp-controller="Video">Upload New Video</a>
+</p>
+<div class="animate__animated animate__zoomIn table table-responsive gray2 rounded rounded-5 p-md-5 mt-3">
+    <table id="myTable">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Type)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    Video
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        <video src="@Url.Content(item.FilePath)" controls class="img-thumbnail rounded rounded-3" height="100px" width="150px"></video>
+                    </td>
+                    <td>
+                        <a class="btn btn-outline-dark" asp-action="DetailVideo" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info"></i></a>
+                        <a class="btn btn-outline-danger" asp-action="DeleteVideo" asp-route-id="@item.Id"><i class="fa-solid fa-trash-can"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function validateFileSize(input) {
+        const maxSize = 100 * 1024 * 1024; // 100 MB
+        const errorSpan = document.getElementById("fileSizeError");
+
+        if (input.files[0].size > maxSize) {
+            errorSpan.classList.remove("d-none");
+            input.value = ""; // Clear the input field
+        } else {
+            errorSpan.classList.add("d-none");
+        }
+    }
+</script>

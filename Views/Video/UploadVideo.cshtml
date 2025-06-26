@@ -1,0 +1,125 @@
+﻿<div class="container mt-5 pt-5 animate__animated animate__zoomIn">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form asp-action="UploadVideo" asp-controller="Video" method="post" enctype="multipart/form-data" class="border p-4 rounded shadow" id="uploadForm">
+                <!-- Video File Input -->
+                <div class="mb-3">
+                    <label for="videoFile" class="form-label fw-bold">Choose Video</label>
+                    <input type="file" name="videoFile" id="videoFile" accept="video/*" class="form-control" required>
+                    <small id="fileSizeDisplay" class="text-info" style="display: none;">File size: <span id="fileSize"></span> MB</small>
+                    <small id="fileSizeError" class="text-danger" style="display: none;">File size exceeds 200 MB. Please select a smaller file.</small>
+                </div>
+
+                <!-- Type Selection -->
+                <div class="mb-3">
+                    <label for="type" class="form-label fw-bold">Type</label>
+                    <select name="type" id="type" class="form-control" required>
+                        <option value="">Select Type</option>
+                        <option value="House">House</option>
+                        <option value="Flats">Flats</option>
+                        <option value="Commercial">Commercial</option>
+                        <option value="Plots">Plots</option>
+                    </select>
+                </div>
+
+                <!-- Location Input -->
+                <div class="mb-3">
+                    <label for="location" class="form-label fw-bold">Location</label>
+                    <input type="text" name="location" id="location" class="form-control" placeholder="Enter video location" required>
+                </div>
+
+                <!-- Description Input -->
+                <div class="mb-3">
+                    <label for="description" class="form-label fw-bold">Description | Contact Detail</label>
+                    <textarea name="description" id="description" rows="4" class="form-control" placeholder="Enter video description" required></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-dark w-100" id="uploadButton" disabled>Upload</button>
+
+                <!-- Progress Bar -->
+                <div class="progress mt-3 h-25" id="progressContainer" style="display: none;">
+                    <div class="progress-bar bg-info" id="progressBar" role="progressbar" style="width: 0%;" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* <style> *@
+@*     .progress { *@
+@*         height: 20px; *@
+@*     } *@
+@* *@
+@*     .progress-bar { *@
+@*         background-color: saddlebrown; *@
+@*     } *@
+@* </style> *@
+
+<script>
+    document.getElementById("videoFile").addEventListener("change", function (event) {
+        const file = event.target.files[0];
+        const maxSize = 200 * 1024 * 1024; // 200 MB
+        const fileSizeDisplay = document.getElementById("fileSizeDisplay");
+        const fileSizeError = document.getElementById("fileSizeError");
+        const uploadButton = document.getElementById("uploadButton");
+
+        if (file) {
+            const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2); // Convert to MB and format
+            document.getElementById("fileSize").textContent = fileSizeMB;
+            fileSizeDisplay.style.display = "block";
+
+            if (file.size > maxSize) {
+                fileSizeError.style.display = "block";
+                fileSizeDisplay.style.color = "red";
+                uploadButton.disabled = true;
+            } else {
+                fileSizeError.style.display = "none";
+                fileSizeDisplay.style.color = "green";
+                uploadButton.disabled = false;
+            }
+        }
+    });
+
+    document.getElementById("uploadForm").addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent default form submission
+
+        const formData = new FormData(this);
+        const progressContainer = document.getElementById("progressContainer");
+        const progressBar = document.getElementById("progressBar");
+
+        progressContainer.style.display = "block";
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", this.action, true);
+
+        // Update progress bar during upload
+        xhr.upload.addEventListener("progress", function (event) {
+            if (event.lengthComputable) {
+                const percentage = Math.round((event.loaded / event.total) * 100);
+                progressBar.style.width = percentage + "%";
+                progressBar.innerText = percentage + "%";
+            }
+        });
+
+        // On upload complete
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                progressBar.style.width = "100%";
+                progressBar.innerText = "Upload Complete!";
+                alert("Video uploaded successfully!");
+                window.location.reload(); // Optionally reload the page
+            } else {
+                alert("An error occurred while uploading the video.");
+            }
+        };
+
+        // Handle errors
+        xhr.onerror = function () {
+            alert("An error occurred while uploading the video.");
+        };
+
+        // Send the form data
+        xhr.send(formData);
+    });
+</script>

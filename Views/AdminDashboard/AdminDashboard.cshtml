@@ -1,0 +1,286 @@
+﻿@model IEnumerable<PakProperties.Models.UserProfile>
+@{
+    ViewData["Title"] = "AdminDashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<h1 class="text-center">All Properties</h1>
+
+@* <h1 class="text-center">Manage All Users</h1>
+<div class=" animate__animated  animate__zoomIn table table-responsive gray2 rounded rounded-5 p-md-2">
+    <table id="myTable">
+        <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.UserName)</th>
+            <th>@Html.DisplayNameFor(model => model.Email)</th>
+            <th>@Html.DisplayNameFor(model => model.FullName)</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.UserName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                <td>@Html.DisplayFor(modelItem => item.FullName)</td>
+                    <td>
+                        <a class="btn btn-outline-dark" asp-controller="Users" asp-action="Edit" asp-route-id="@item.Id">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </a>
+                        <a class="btn btn-outline-dark" asp-controller="Users" asp-action="Details" asp-route-id="@item.Id">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </a>
+                        <a class="btn btn-outline-danger" asp-controller="Users" asp-action="Delete" asp-route-id="@item.Id">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </a>
+
+                        <!-- Assign Admin Button -->
+                        <form asp-controller="AdminDashboard" asp-action="AssignAdminRole" asp-route-id="@item.Id" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-outline-primary" title="Assign Admin Role">
+                                <i class="fa-solid fa-user-shield"></i>
+                            </button>
+                        </form>
+
+                    </td>
+
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+ *@
+<style>
+    .chart-box {
+        border: 2px solid brown;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(165, 42, 42, 0.2); /* light brown glow */
+        background-color: #fff;
+    }
+
+    .chart-container {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    #propertyChart {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .chart-box {
+        border: 2px solid brown;
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 0 10px rgba(165, 42, 42, 0.2);
+        background-color: #fff;
+        margin-bottom: 30px;
+    }
+
+    .chart-container {
+        width: 100%;
+        height: auto;
+    }
+
+
+    canvas {
+        width: 100% !important;
+        height: 100% !important;
+    }
+</style>
+
+
+
+<div class="container my-4">
+    <div class="row">
+        <!-- Sell Chart -->
+        <div class="col-md-6 mb-4 animate__animated  animate__zoomIn">
+            <div class="chart-box">
+                <h4 class="text-center mb-3">Sell Property Categories</h4>
+                <div class="chart-container">
+                    <canvas id="sellChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rent Chart -->
+        <div class="col-md-6 mb-4 animate__animated  animate__zoomIn">
+            <div class="chart-box">
+                <h4 class="text-center mb-3">Rent Property Categories</h4>
+                <div class="chart-container">
+                    <canvas id="rentChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container my-4 ">
+    <div class="row">
+        <!-- Sell Cities Chart -->
+        <div class="col-md-6 mb-4 animate__animated  animate__zoomIn">
+            <div class="chart-box">
+                <h4 class="text-center mb-3">Top Cities (Sell Listings)</h4>
+                <div class="chart-container">
+                    <canvas id="topSellCitiesChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rent Cities Chart -->
+        <div class="col-md-6 mb-4 animate__animated  animate__zoomIn">
+            <div class="chart-box">
+                <h4 class="text-center mb-3">Top Cities (Rent Listings)</h4>
+                <div class="chart-container">
+                    <canvas id="topRentCitiesChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container my-4 animate__animated  animate__zoomIn">
+    <div class="chart-box">
+        <h4 class="text-center mb-3">Rent vs. Sell Properties</h4>
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 15rem;">
+            <div class="chart-container w-100" style="max-width: 20rem;">
+                <canvas id="propertyChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Rent vs. Sell — Doughnut Chart
+    const ctx = document.getElementById('propertyChart').getContext('2d');
+    const propertyChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Rent', 'Sell'],
+            datasets: [{
+                label: 'Number of Properties',
+                data: [@ViewBag.RentCount, @ViewBag.SellCount],
+                backgroundColor: ['#f87171', '#60a5fa'],
+                borderColor: ['#b91c1c', '#1e40af'],
+                borderWidth: 1
+
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 15
+                    }
+                }
+            }
+        }
+    });
+
+    // Sell Categories — Bar Chart
+    // Sell Categories — Bar Chart
+    const sellCtx = document.getElementById('sellChart').getContext('2d');
+    new Chart(sellCtx, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Json.Serialize(ViewBag.SellCategories.Keys)),
+            datasets: [{
+                label: 'Sell Properties',
+                data: @Html.Raw(Json.Serialize(ViewBag.SellCategories.Values)),
+                backgroundColor: 'rgba(60, 179, 113, 0.7)',
+                barThickness: 30 // ← Bar width in pixels
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Rent Categories — Bar Chart
+    const rentCtx = document.getElementById('rentChart').getContext('2d');
+    new Chart(rentCtx, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Json.Serialize(ViewBag.RentCategories.Keys)),
+            datasets: [{
+                label: 'Rent Properties',
+                data: @Html.Raw(Json.Serialize(ViewBag.RentCategories.Values)),
+                backgroundColor: 'rgba(70, 130, 180, 0.7)',
+                barThickness: 30 // ← Bar width in pixels
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
+    // Top Cities (Sell) — Bar Chart
+    const sellCitiesChart = new Chart(document.getElementById('topSellCitiesChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Json.Serialize((ViewBag.TopSellCities as IEnumerable<dynamic>).Select(c => c.City))),
+            datasets: [{
+                label: 'Sell Listings',
+                data: @Html.Raw(Json.Serialize((ViewBag.TopSellCities as IEnumerable<dynamic>).Select(c => c.Count))),
+                backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                barThickness: 30 // ← Set fixed bar width
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Top Cities (Rent) — Bar Chart
+    const rentCitiesChart = new Chart(document.getElementById('topRentCitiesChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Json.Serialize((ViewBag.TopRentCities as IEnumerable<dynamic>).Select(c => c.City))),
+            datasets: [{
+                label: 'Rent Listings',
+                data: @Html.Raw(Json.Serialize((ViewBag.TopRentCities as IEnumerable<dynamic>).Select(c => c.Count))),
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                barThickness: 30 // ← Set fixed bar width
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+</script>

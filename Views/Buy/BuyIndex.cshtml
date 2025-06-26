@@ -1,0 +1,314 @@
+﻿    @model IEnumerable<PakProperties.Models.Sell>
+
+    <link rel="stylesheet" href="~/css/property-filters.css" />
+
+    @{
+        ViewData["Title"] = "Buy Now";
+
+        var cities = new List<string> {
+            "Islamabad", "Lahore", "Karachi", "Multan", "Faisalabad",
+            "Ahmed Nager Chatha", "Ahmadpur East", "Ali Khan Abad", "Alipur", "Arifwala", "Attock", "Bhera",
+            "Bhalwal", "Bahawalnagar", "Bahawalpur", "Bhakkar", "Burewala", "Chillianwala", "Chakwal",
+            "Chichawatni", "Chiniot", "Chishtian", "Daska", "Darya Khan", "Dera Ghazi Khan", "Dhaular", "Dina",
+            "Dinga", "Dipalpur", "Ferozewala", "Fateh Jang", "Ghakhar Mandi", "Gojra", "Gujranwala", "Gujrat",
+            "Gujar Khan", "Hafizabad", "Haroonabad", "Hasilpur", "Haveli Lakha", "Jatoi", "Jalalpur", "Jattan",
+            "Jampur", "Jaranwala", "Jhang", "Jhelum", "Kalabagh", "Karor La-l Esan", "Kasur", "Kamalia", "Kamoke",
+            "Khanewal", "Khanpur", "Kharian", "Khushab", "Kot Addu", "Jauharabad", "Lalamusa", "Layyah",
+            "Liaquat Pur", "Lodhran", "Malakwal", "Mamoori", "Mailsi", "Mandi Bahauddin", "Mian Channu",
+            "Mianwali", "Murree", "Muridke", "Mianwali Bangla", "Muzaffargarh", "Narowal", "Nankana Sahib", "Okara",
+            "Renala Khurd", "Pakpattan", "Pattoki", "Pir Mahal", "Qaimpur", "Qila Didar Singh", "Rabwah",
+            "Raiwind", "Rajanpur", "Rahim Yar Khan", "Rawalpindi", "Sadiqabad", "Safdarabad", "Sahiwal",
+            "Sangla Hill", "Sarai Alamgir", "Sargodha", "Shakargarh", "Sheikhupura", "Sialkot", "Sohawa",
+            "Soianwala", "Siranwali", "Talagang", "Taxila", "Toba Tek Singh", "Vehari", "Wah Cantonment",
+            "Wazirabad",
+            // Sindh
+            "Badin", "Bhirkan", "Rajo Khanani", "Chak", "Dadu", "Digri", "Diplo", "Dokri", "Ghotki", "Haala",
+            "Hyderabad", "Islamkot", "Jacobabad", "Jamshoro", "Jungshahi", "Kandhkot", "Kandiaro", "Kashmore",
+            "Keti Bandar", "Khairpur", "Kotri", "Larkana", "Matiari", "Mehar", "Mirpur Khas", "Mithani", "Mithi",
+            "Mehrabpur", "Moro", "Nagarparkar", "Naudero", "Naushahro Feroze", "Naushara", "Nawabshah",
+            "Nazimabad", "Qambar", "Qasimabad", "Ranipur", "Ratodero", "Rohri", "Sakrand", "Sanghar",
+            "Shahbandar", "Shahdadkot", "Shahdadpur", "Shahpur Chakar", "Shikarpaur", "Sukkur", "Tangwani",
+            "Tando Adam Khan", "Tando Allahyar", "Tando Muhammad Khan", "Thatta", "Umerkot", "Warah",
+            // Khyber Pakhtunkhwa
+            "Abbottabad", "Adezai", "Alpuri", "Akora Khattak", "Ayubia", "Banda Daud Shah", "Bannu", "Batkhela",
+            "Battagram", "Birote", "Chakdara", "Charsadda", "Chitral", "Daggar", "Dargai", "Dera Ismail Khan",
+            "Doaba", "Dir", "Drosh", "Hangu", "Haripur", "Karak", "Kohat", "Kulachi", "Lakki Marwat", "Latamber",
+            "Madyan", "Mansehra", "Mardan", "Mastuj", "Mingora", "Nowshera", "Paharpur", "Pabbi", "Peshawar",
+            "Saidu Sharif", "Shorkot", "Shewa Adda", "Swabi", "Swat", "Tangi", "Tank", "Thall", "Timergara",
+            "Tordher",
+            // Balochistan
+            "Awaran", "Barkhan", "Chagai", "Dera Bugti", "Gwadar", "Harnai", "Jafarabad", "Jhal Magsi", "Kacchi",
+            "Kalat", "Kech", "Kharan", "Khuzdar", "Killa Abdullah", "Killa Saifullah", "Kohlu", "Lasbela", "Lehri",
+            "Loralai", "Mastung", "Musakhel", "Nasirabad", "Nushki", "Panjgur", "Pishin Valley", "Quetta", "Sherani",
+            "Sibi", "Sohbatpur", "Washuk", "Zhob", "Ziarat"
+        };
+
+        var selectedCity = Context.Request.Query["city"].ToString();
+    }
+    <link rel="stylesheet" href="~/css/PropertyPage.css">
+
+
+
+
+    }
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+    <link rel="stylesheet" href="~/css/home.css">
+
+    
+
+<section class="container mt-5">
+
+
+    <div class="filter-form-container animate__animated animate__zoomIn">
+            <form id="filterForm" asp-action="BuyIndex" method="get" class="row g-3 mb-4">
+
+            <!-- 🔘 Property Type as Radio Buttons -->
+            <div class="col-md-12">
+                <label class="form-label fw-bold">Property Type:</label><br />
+                @{
+                    var types = new[] { "All", "House", "Flat", "Plot", "Commercial" };
+                    foreach (var t in types)
+                    {
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="type" value="@t"
+                                   id="type@t" @(ViewBag.SelectedType == t ? "checked" : "") />
+                            <label class="form-check-label" for="type@t">@t</label>
+                        </div>
+                    }
+                }
+            </div>
+
+
+
+            <div class="row mt-3 animate__animated animate__zoomIn">
+                    <div class="col-md-2 col-12 mb-2">
+                        <label class="form-label fw-bold">City:</label>
+                        <input list="cityOptions" name="city" class="form-control" placeholder="Enter or select city" value="@ViewBag.SelectedCity" />
+                        <datalist id="cityOptions">
+                            @foreach (var city in cities)
+                            {
+                                <option value="@city"></option>
+                            }
+                        </datalist>
+                    </div>
+
+                    <div class="col-md-2 col-12 mb-2">
+                        <label class="form-label fw-bold">Min Price:</label>
+                        <input type="number" name="minPrice" class="form-control" value="@ViewBag.MinPrice" />
+                    </div>
+
+                    <div class="col-md-2 col-12 mb-2">
+                        <label class="form-label fw-bold">Max Price:</label>
+                        <input type="number" name="maxPrice" class="form-control" value="@ViewBag.MaxPrice" />
+                    </div>
+
+                    <div class="col-md-2 col-12 mb-2">
+                        <label class="form-label fw-bold">Bedrooms:</label>
+                        <input type="number" name="bedrooms" class="form-control" value="@ViewBag.Bedrooms" />
+                    </div>
+
+                    <div class="col-md-2 col-12 mb-2">
+                        <label class="form-label fw-bold">Bathrooms:</label>
+                        <input type="number" name="bathrooms" class="form-control" value="@ViewBag.Bathrooms" />
+                    </div>
+
+                    <div class="col-md-2 col-12 mb-2">
+                        <label class="form-label fw-bold">Area Size (Marla):</label>
+                        <input type="number" name="areaSize" class="form-control" value="@ViewBag.AreaSize" />
+                    </div>
+                </div>
+
+
+
+
+
+
+                <div class="filter-button-wrapper">
+                    <span class="reset-icon" onclick="resetFilters()">❌</span>
+                    <button type="submit" class="btn btn-success filter-button">Apply Filters</button>
+                </div>
+
+
+
+
+
+        </form>
+
+        <!-- 🔍 Search Text -->
+        <div class="col-md-6 animate__animated animate__zoomIn">
+            <label class="form-label fw-bold" for="searchInput">Search:</label>
+            <div class="position-relative">
+                <input type="text" name="search" id="searchInput" class="form-control" placeholder="Search by title" value="@ViewBag.Search" />
+                <span class="search-icon position-absolute end-0 top-50 translate-middle-y pe-3"><i class="bi bi-search"></i></span>
+            </div>
+        </div>
+
+
+        </div>
+
+@*         buy properties show *@
+      <section class="container mt-5">
+        <hr />
+        <div id="cardContainer" class="mt-3 mt-sm-0 mx-auto pb-4 row  flex-wrap bg-transparent">
+            @foreach (var item in Model)
+            {
+                <div class="property-card animate__animated animate__zoomIn col-12 col-sm-6 col-lg-4 my-3" data-address="@item.Address" data-city="@item.City" data-type="@item.Type" data-price="@item.Price" data-area="@item.AreaSize" data-room="@item.Bedrooms" data-bathroom="@item.Bathrooms">
+                <figure class="card-banner">
+                    <a href="#">
+                        <img src="~/images/sell/@item.PrimaryImageUrl" alt="New Apartment Nice View" class="w-100">
+                    </a>
+                    <div class="card-badge orange">For Sales</div>
+
+                    <div class="banner-actions">
+                        <button class="banner-actions-btn">
+                            <ion-icon name="location"></ion-icon>
+
+                            <address>@item.City</address>
+                        </button>
+                    
+                    </div>
+
+                </figure>
+
+                <div class="card-content">
+
+                    <div class="card-price">
+                        <strong>@item.Price</strong> PKR
+                    </div>
+
+                    <h3 class="h3 card-title">
+                        <a asp-controller="Buy" asp-action="ViewProperty" asp-route-id="@item.Id">@item.Title</a>
+                    </h3>
+
+                    <p class="card-text">
+                        @item.Address
+                    </p>
+
+                    <ul class="card-list">
+
+                        <li class="card-item">
+                            <strong>@item.Bedrooms</strong>
+
+                            <ion-icon name="bed-outline"></ion-icon>
+
+                            <span>Bedrooms</span>
+                        </li>
+
+                        <li class="card-item">
+                            <strong>@item.Bathrooms</strong>
+
+                            <ion-icon name="man-outline"></ion-icon>
+
+                            <span>Bathrooms</span>
+                        </li>
+
+                        <li class="card-item">
+                            <strong>@item.AreaSize</strong>
+
+                            <ion-icon name="square-outline"></ion-icon>
+
+                            <span>Marla</span>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+            }
+
+        </div>
+
+      </section>
+
+</section>
+    <script src="https://unpkg.com/scrollreveal"></script>
+
+    <script>
+        document.getElementById("searchInput").addEventListener("input", function () {
+            let filter = this.value.toLowerCase();
+            let cards = document.querySelectorAll(".property-card");
+
+            cards.forEach(card => {
+                let address = (card.getAttribute("data-address") || "").toLowerCase();
+                let room = (card.getAttribute("data-room") || "").toLowerCase();
+                let bathroom = (card.getAttribute("data-bathroom") || "").toLowerCase();
+                let city = (card.getAttribute("data-city") || "").toLowerCase();
+                let type = (card.getAttribute("data-type") || "").toLowerCase();
+                let price = (card.getAttribute("data-price") || "").toLowerCase();
+                let area = (card.getAttribute("data-area") || "").toLowerCase();
+
+                if (
+                    address.includes(filter) ||
+                    city.includes(filter) ||
+                    type.includes(filter) ||
+                    room.includes(filter) ||
+                    bathroom.includes(filter) ||
+                    price.includes(filter) ||
+                    area.includes(filter)
+                ) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        });
+
+        const searchInput = document.getElementById('searchInput');
+        const searchIcon = document.querySelector('.search-icon');
+
+        searchInput.addEventListener('input', () => {
+            if (searchInput.value.trim() !== '') {
+                searchIcon?.classList.add('d-none');
+            } else {
+                searchIcon?.classList.remove('d-none');
+            }
+        });
+
+
+        const citySelect = document.getElementById('citySelect');
+        const customCityInput = document.getElementById('customCityInput');
+
+        citySelect.addEventListener('change', function () {
+            if (this.value === "Other") {
+                customCityInput.style.display = 'block';
+            } else {
+                customCityInput.style.display = 'none';
+                customCityInput.value = ""; // clear if switching back
+            }
+        });
+
+
+   
+            function resetFilters() {
+                const form = document.getElementById("filterForm");
+
+                // Clear all text/number inputs
+                form.querySelectorAll("input").forEach(input => {
+                    if (input.type === "radio") {
+                        input.checked = false; // explicitly uncheck radio buttons
+                    } else if (input.type !== "submit" && input.type !== "button") {
+                        input.value = "";
+                    }
+                }); 
+
+                // Reset selects
+                form.querySelectorAll("select").forEach(select => {
+                    select.selectedIndex = 0;
+                });
+
+                // Optionally hide the ❌ icon (if you toggle it dynamically)
+                const resetIcon = document.querySelector(".reset-icon");
+                if (resetIcon) {
+                    resetIcon.style.display = "none";
+                }
+
+                // Submit the form to reload properties with no filters
+                form.submit();
+            }
+    </script>
+
+
+
+ 

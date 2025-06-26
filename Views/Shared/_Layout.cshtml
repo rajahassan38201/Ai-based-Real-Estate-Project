@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - HomePage</title>
+    <link rel="shortcut icon" href="~/images/icon.png">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="manifest" href="~/manifest.json">
+    <meta name="theme-color" content="#10B981">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="~/favicon/favicon-96x96.png">
+    <link rel="apple-touch-icon" href="~/favicon/apple-touch-icon.png">
+
+    <!-- Manifest for PWA -->
+    <link rel="manifest" href="~/favicon/site.webmanifest">
+
+    <!-- Theme Colors -->
+    <meta name="theme-color" content="#10B981">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+        
+
+</head>
+<body>
+<div id="loader">
+    <div class="spinner"></div>
+</div>
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-2 border-bottom box-shadow fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold fs-5 ms-5 d-block d-sm-none d-lg-block" asp-area="" asp-controller="Home" asp-action="Index" style="color: #10B981">Pak Properties</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1 justify-content-end gap-3 px-5">
+                    <li class="nav-item ">
+                        <a class="nav-link text-dark text-center fw-bold btn-outline-orange rounded @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "btn-orange text-white" : "")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark text-center fw-bold btn-outline-orange rounded @(ViewContext.RouteData.Values["action"]?.ToString() == "BuyIndex" ? "btn-orange text-white" : "")  @(ViewContext.RouteData.Values["action"]?.ToString() == "ViewProperty" ? "btn-orange text-white" : "")" asp-area="" asp-controller="Buy" asp-action="BuyIndex">Buy</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark text-center fw-bold btn-outline-orange rounded @(ViewContext.RouteData.Values["action"]?.ToString() == "SellIndex" ? "btn-orange text-white" : "")" asp-area="" asp-controller="Sell" asp-action="SellIndex">Sell</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark text-center fw-bold btn-outline-orange rounded @(ViewContext.RouteData.Values["action"]?.ToString() == "RentIndex" ? "btn-orange text-white" : "")  @(ViewContext.RouteData.Values["action"]?.ToString() == "RentUpload" ? "btn-orange text-white" : "") @(ViewContext.RouteData.Values["action"]?.ToString() == "ViewRentProperty" ? "btn-orange text-white" : "") " asp-area="" asp-controller="Rent" asp-action="RentIndex">Rent</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark text-center fw-bold btn-outline-orange rounded @(ViewContext.RouteData.Values["action"]?.ToString() == "VideoIndex" ? "btn-orange text-white" : "") @(ViewContext.RouteData.Values["action"]?.ToString() == "UploadVideo" ? "btn-orange text-white" : "")" asp-area="" asp-controller="Video" asp-action="VideoIndex">Videos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://pakistan-houses-price-prediction.streamlit.app/" target="_blank" class="nav-link text-dark text-center fw-bold btn-outline-orange rounded" >Predict</a>
+                    </li>
+                    <partial name="_LoginPartial"/>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<div>
+    <main role="main">
+        @RenderBody()
+    </main>
+</div>
+
+<script>
+    // Hide loader once the page is fully loaded
+    window.addEventListener('load', function () {
+        document.getElementById('loader').style.display = 'none';
+    });
+</script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(function () {
+                    console.log("✅ Service Worker Registered");
+                });
+        }
+    </script>
+
+</body>
+</html>

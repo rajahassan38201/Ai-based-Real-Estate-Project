@@ -1,0 +1,67 @@
+﻿@model PakProperties.Models.Video
+@using System.Security.Claims
+
+@{
+    bool isAdmin = User.IsInRole("admin");
+    Layout = isAdmin ? "~/Views/Shared/_AdminLayout.cshtml" : "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<div class="container mt-3 animate__animated animate__zoomIn">
+    <div class="card shadow-lg">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 d-flex justify-content-center align-items-center">
+                    <video class="w-100 rounded shadow" src="@Url.Content(Model.FilePath)" controls autoplay></video>
+                </div>
+                <div class="col-md-6">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Type:</th>
+                            <td>@Model.Type</td>
+                        </tr>
+                        <tr>
+                            <th>Location:</th>
+                            <td>@Model.Location</td>
+                        </tr>
+                        <tr>
+                            <th>Description:</th>
+                            <td>@Model.Description</td>
+                        </tr>
+                        <tr>
+                            <th>Full Name:</th>
+                            <td>@Model.User?.FullName</td>
+                        </tr>
+                        <tr>
+                            <th>Email:</th>
+                            <td>@Model.User?.Email</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer text-center mb-3">
+
+
+
+            <div class="card-footer d-flex justify-content-center gap-3 mb-3">
+                @if (!isAdmin)
+                {
+                    <a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@Model?.Id">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                    </a>
+                }
+
+                <a href="@ViewBag.ReturnUrl" class="btn btn-secondary mb-3">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+
+            </div>
+
+
+
+
+        </div>
+
+    </div>
+</div>

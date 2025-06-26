@@ -1,0 +1,434 @@
+﻿@model IEnumerable<PakProperties.Models.Sell>
+@{
+  ViewData["Title"] = "Home Page";
+}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+<link rel="stylesheet" href="~/css/home.css">
+
+  <!-- 
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+
+  <main>
+    <article>
+
+      <section class="hero animate__animated animate__zoomIn" id="home">
+        <div class="container">
+
+          <div class="hero-content">
+
+            <p class="hero-subtitle">
+              <ion-icon name="home"></ion-icon>
+
+              <span>Real Estate Agency</span>
+            </p>
+
+            <h2 class="h1 hero-title">Find Your Dream House By Us</h2>
+
+            <p class="hero-text">
+              Discover the perfect home that matches your lifestyle and aspirations. Let us guide you to your dream house with ease and confidence.
+            </p>
+
+            <a class="btn" href="https://pakistan-houses-price-prediction.streamlit.app/" target="_self">House Price Prediction</a>
+
+          </div>
+
+          <figure class="hero-banner">
+            <img src="~/images/hero-banner.png" alt="Modern house model" class="w-100">
+          </figure>
+        </div>
+      </section>
+
+
+      <section class="service" id="service">
+        <div class="container">
+
+          <p class="section-subtitle">Our Services</p>
+
+          <h2 class="h2 section-title">Our Main Services</h2>
+
+          <ul class="features-list">
+          
+          
+            <li>
+              <a asp-controller="Buy" asp-action="BuyIndex" class="features-card">
+          
+                <div class="card-icon">
+                  <ion-icon name="home-outline"></ion-icon>
+                </div>
+                <h3 class="card-title">Buy a Property</h3>
+          
+                <div class="card-btn">
+                  <ion-icon name="arrow-forward-outline"></ion-icon>
+                </div>
+          
+              </a>
+            </li>
+          
+            <li>
+              <a asp-controller="Sell" asp-action="SellIndex" class="features-card">
+          
+                <div class="card-icon">
+                  <ion-icon name="library-outline"></ion-icon>
+                </div>
+          
+                <h3 class="card-title">Sell a Property</h3>
+          
+                <div class="card-btn">
+                  <ion-icon name="arrow-forward-outline"></ion-icon>
+                </div>
+          
+              </a>
+            </li>
+          
+            <li>
+              <a asp-controller="Rent" asp-action="RentIndex" class="features-card">
+          
+                <div class="card-icon">
+                  <ion-icon name="shield-checkmark-outline"></ion-icon>
+                </div>
+          
+                <h3 class="card-title">Rent a Property</h3>
+          
+                <div class="card-btn">
+                  <ion-icon name="arrow-forward-outline"></ion-icon>
+                </div>
+          
+              </a>
+            </li>
+          
+            <li>
+              <a asp-controller="Video" asp-action="VideoIndex" class="features-card">
+          
+                <div class="card-icon">
+                  <ion-icon name="fitness-outline"></ion-icon>
+                </div>
+          
+                <h3 class="card-title">Videos</h3>
+          
+                <div class="card-btn">
+                  <ion-icon name="arrow-forward-outline"></ion-icon>
+                </div>
+          
+              </a>
+            </li>
+          
+          </ul>
+
+        </div>
+      </section>
+
+
+      <section class="property" id="property">
+        <div class="container">
+
+          <p class="section-subtitle">Properties</p>
+
+          <h2 class="h2 section-title">Featured Listings</h2>
+
+          <ul class="property-list has-scrollbar">
+
+            @foreach (var item in Model)
+            {
+              
+              <li>
+                <div class="property-card">
+                  <figure class="card-banner">
+                    <a href="#">
+                      <img src="~/images/sell/@item.PrimaryImageUrl" alt="New Apartment Nice View" class="w-100">
+                    </a>
+                    <div class="card-badge orange">For Sales</div>
+
+                    <div class="banner-actions">
+                      <button class="banner-actions-btn">
+                        <ion-icon name="location"></ion-icon>
+
+                        <address>@item.City</address>
+                      </button>
+
+                    </div>
+
+                  </figure>
+
+                  <div class="card-content">
+
+                    <div class="card-price">
+                      <strong>@item.Price</strong> PKR
+                    </div>
+
+                    <h3 class="h3 card-title">
+                      <a asp-controller="Buy" asp-action="ViewProperty" asp-route-id="@item.Id">@item.Title</a>
+                    </h3>
+
+                    <p class="card-text">
+                      @item.Address
+                    </p>
+
+                    <ul class="card-list">
+
+                      <li class="card-item">
+                        <strong>@item.Bedrooms</strong>
+
+                        <ion-icon name="bed-outline"></ion-icon>
+
+                        <span>Bedrooms</span>
+                      </li>
+
+                      <li class="card-item">
+                        <strong>@item.Bathrooms</strong>
+
+                        <ion-icon name="man-outline"></ion-icon>
+
+                        <span>Bathrooms</span>
+                      </li>
+
+                      <li class="card-item">
+                        <strong>@item.AreaSize</strong>
+
+                        <ion-icon name="square-outline"></ion-icon>
+
+                        <span>Marla</span>
+                      </li>
+
+                    </ul>
+
+                  </div>
+
+                </div>
+              </li>
+              
+            }
+            
+
+          </ul>
+
+        </div>
+      </section>
+
+
+      <section class="cta">
+        <div class="container">
+
+          <div class="cta-card">
+            <div class="card-content">
+              <h2 class="h2 card-title">Looking for a dream home?</h2>
+
+              <p class="card-text">We can help you realize your dream of a new home</p>
+            </div>
+
+            <a class="btn cta-btn" asp-controller="Buy" asp-action="BuyIndex">
+              <span>Explore Properties</span>
+
+              <ion-icon name="arrow-forward-outline"></ion-icon>
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+    </article>
+  </main>
+
+  <footer class="footer">
+
+    <div class="footer-top">
+      <div class="container">
+
+        <div class="footer-brand">
+
+          <ul class="contact-list ">
+                    <li>
+                        <p class="footer-list-title">Developer Contact</p>
+                    </li>
+
+            <li>
+              <a href="#" class="contact-link">
+                <ion-icon name="location-outline"></ion-icon>
+
+                <address>Islamabad, Punjab, Pakistan</address>
+              </a>
+            </li>
+
+            <li>
+              <a href="tel:+923023536363" class="contact-link">
+                <ion-icon name="call-outline"></ion-icon>
+
+                <span>+92 302 3536363</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="mailto:rajahassan@gmail.com" class="contact-link">
+                <ion-icon name="mail-outline"></ion-icon>
+
+                <span>rajahassan@gmail.com</span>
+              </a>
+            </li>
+
+          </ul>
+          <hr />
+
+                <ul class="contact-list">
+
+                    <li>
+                        <a href="#" class="contact-link">
+                            <ion-icon name="location-outline"></ion-icon>
+
+                            <address>Islamabad, Punjab, Pakistan</address>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="tel:+923067772241" class="contact-link">
+                            <ion-icon name="call-outline"></ion-icon>
+
+                            <span>+92 306 7772241</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="mailto:alihusnaintcf970@gmail.com" class="contact-link">
+                            <ion-icon name="mail-outline"></ion-icon>
+
+                            <span>alihusnaintcf970@gmail.com</span>
+                        </a>
+                    </li>
+
+                </ul>
+       @*    <ul class="social-list">
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-facebook"></ion-icon>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-twitter"></ion-icon>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-linkedin"></ion-icon>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-youtube"></ion-icon>
+              </a>
+            </li>
+
+          </ul> *@
+
+        </div>
+
+        <div class="footer-link-box">
+
+                <ul class="footer-list">
+                    <li>
+                        <p class="footer-list-title">Company</p>
+                    </li>
+
+                    <li>
+                        <a href="#" class="footer-link">About</a>
+                    </li>
+
+                    <li>
+                        <a asp-controller="Buy" asp-action="BuyIndex" class="footer-link">All Properties</a>
+                    </li>
+
+
+                    <li>
+                        <a asp-controller="Video" asp-action="VideoIndex" class="footer-link">Video Reels</a>
+                    </li>
+
+                    <li>
+                        <a href="https://pakistan-houses-price-prediction.streamlit.app/" class="footer-link" target="_blank">Price Prediction</a>
+                    </li>
+
+                    <li>
+                        <a asp-controller="UserDashboard" asp-action="UserDashboard" class="footer-link">User Dashboard</a>
+                    </li>
+
+                </ul>
+
+
+                <ul class="footer-list">
+
+                    <li>
+                        <p class="footer-list-title">Services</p>
+                    </li>   
+        
+                    <li>
+                        <a class="footer-link" asp-controller="Buy" asp-action="BuyIndex">Buy</a>
+                    </li>
+
+                    <li>
+                        <a class="footer-link" asp-controller="Sell" asp-action="SellIndex">Sell</a>
+                    </li>
+
+                    <li>
+                        <a class="footer-link" asp-controller="Rent" asp-action="RentIndex">Rent</a>
+                    </li>
+
+                    <li>
+                        <a class="footer-link" asp-controller="Video" asp-action="VideoIndex">Videos</a>
+                    </li>
+
+                    <li>
+                        <a class="footer-link" href="https://pakistan-houses-price-prediction.streamlit.app/" target="_blank">Predict</a>
+                    </li>
+
+                </ul>
+
+
+          <ul class="footer-list">
+
+            <li>
+              <p class="footer-list-title">Customer Care</p>
+            </li>
+
+            <li>
+                        <a class="footer-link"  asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                    </li>
+
+            <li>
+                        <a class ="footer-link" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                    </li>
+
+           
+
+          </ul>
+
+        </div>
+
+      </div>
+    </div>
+
+  </footer>
+
+
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+<script>
+    (function () {
+        if (!window.chatbase || window.chatbase("getState") !== "initialized") {
+            window.chatbase = (...arguments) => { if (!window.chatbase.q) { window.chatbase.q = [] } window.chatbase.q.push(arguments) };
+            window.chatbase = new Proxy(window.chatbase, { get(target, prop) { if (prop === "q") { return target.q } return (...args) => target(prop, ...args) } })
+        } const onLoad = function () { const script = document.createElement("script"); script.src = "https://www.chatbase.co/embed.min.js"; script.id = "OJ0e5CR9G1uCEliIB7YJ9"; script.domain = "www.chatbase.co"; document.body.appendChild(script) };
+        if (document.readyState === "complete") { onLoad() } else { window.addEventListener("load", onLoad) }
+    })();
+</script>
+  

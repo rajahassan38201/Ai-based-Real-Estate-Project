@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<Users> signInManager;
+    
+    @if (signInManager.IsSignedIn(User)==true)
+    {
+    if (User.IsInRole("admin"))
+    {
+            <li class="nav-item">
+                <a class="nav-link text-white text-center fw-bold btn-danger rounded" asp-area="" asp-controller="AdminDashboard" asp-action="AdminDashboard">Admin</a>
+            </li>
+            
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark text-center fw-bold btn-outline-orange rounded" asp-area="" asp-controller="UserDashboard" asp-action="UserDashboard">Dashboard</a>
+            </li>
+            
+
+        }
+        <li class="nav-item">
+            <a class="nav-link text-dark text-center fw-bold btn-outline-orange rounded" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark text-center fw-bold btn-outline-orange rounded" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark text-center fw-bold btn-outline-orange rounded" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+        </li>
+    }
+

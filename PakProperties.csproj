@@ -1,0 +1,72 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MessagePack" Version="2.5.192" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.36" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.36" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.36">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.36" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.36" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.36">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Core" Version="6.0.18" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.18" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\ContactUs\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\ContactUs\Delete.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\ContactUs\Details.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\ContactUs\Edit.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\ContactUs\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\FAQs\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\FAQs\Delete.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\FAQs\Details.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\FAQs\Edit.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\FAQs\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Footer\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Footer\Delete.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Footer\Details.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Footer\Edit.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\Footer\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\HomeCards\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\HomeCards\Delete.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\HomeCards\Details.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\HomeCards\Edit.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\HomeCards\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\MyProfile\Delete.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\MyProfile\Details.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\MyProfile\Edit.cshtml" />
+    <_ContentIncludedByDefault Remove="Views\MyProfile\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="wwwroot\manifest.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="Views\AdminProfile\Delete.cshtml" />
+    <AdditionalFiles Include="Views\AdminProfile\Edit.cshtml" />
+    <AdditionalFiles Include="Views\AdminProfile\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\favicon\favicon.svg" />
+    <None Include="wwwroot\favicon\site.webmanifest" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,72 @@
+﻿@model IEnumerable<dynamic>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+
+<p>
+    <a class="btn btn-outline-dark mt-3" asp-action="SellIndex" asp-controller="Sell">Upload New</a>
+</p>
+<div class=" animate__animated  animate__zoomIn table table-responsive gray2 rounded rounded-5 p-md-5 mt-3">
+    <table id="myTable">
+        <thead>
+            <tr>
+                <th>
+                    Type
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Image
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.Type
+                    </td>
+                    <td>
+                        @item.Description
+                    </td>
+                    <td>
+                        <img src="~/images/sell/@item.PrimaryImageUrl" alt="Image" class="img-thumbnail rounded rounded-3" height="70px" width="70px" />
+                    </td>
+                    <td>
+                        <a class="btn btn-outline-dark" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square"></i></a>
+@*                         <a class="btn btn-outline-dark" asp-action="Detail" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info"></i></a>
+ *@                       
+<a class="btn btn-outline-info" asp-controller="Sell" asp-action="Detail" asp-route-id="@item.Id" asp-route-returnUrl="@Context.Request.Path">
+    <i class="fa-solid fa-eye"></i>
+</a>
+
+ <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="fa-solid fa-trash-can"></i></a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+

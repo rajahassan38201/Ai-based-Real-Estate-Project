@@ -1,0 +1,51 @@
+﻿@model IEnumerable<PakProperties.Models.Rent>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<p>
+    <a class="btn btn-outline-dark mt-3" asp-action="RentUpload" asp-controller="Rent">Upload New</a>
+</p>
+<div class=" animate__animated  animate__zoomIn table table-responsive gray2 rounded rounded-5 p-md-5 mt-3">
+    <table id="myTable">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Type)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    Image
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        <img src="~/images/sell/@Html.DisplayFor(modelItem => item.PrimaryImageUrl)" alt="Image" class="img-thumbnail rounded rounded-3" height="70px" width="70px" />
+                    </td>
+                    <td>
+                        <a class="btn btn-outline-dark" asp-action="RentDetail" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info"></i></a>
+                        <a class="btn btn-outline-danger" asp-action="RentDelete" asp-route-id="@item.Id"><i class="fa-solid fa-trash-can"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+

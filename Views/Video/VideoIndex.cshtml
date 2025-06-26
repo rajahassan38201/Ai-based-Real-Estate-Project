@@ -1,0 +1,472 @@
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@model IEnumerable<PakProperties.Models.Video>
+
+@{
+    ViewData["Title"] = "Uploaded Videos";
+    var currentLocation = Context.Request.Query["location"];
+    var currentType = Context.Request.Query["type"];
+
+    var delay = 0;
+
+}
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+    }
+
+    .reels-container {
+        position: relative;
+        width: 100vw; /* Default to full width (mobile) */
+        height: 100vh;
+        overflow: hidden;
+        margin: 0 auto; /* Center the container */
+    }
+
+    /* Medium and large devices (50% width) */
+    @@media (min-width: 768px) {
+    .reels-container {
+        width: 50vw; /* Adjust width for medium and large screens */
+    }
+    }
+
+    .reel {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform: translateY(100%);
+        transition: transform 0.5s ease-in-out;
+    }
+
+    .reel.active {
+        transform: translateY(0);
+    }
+
+    .reel video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensure video covers the frame */
+    }
+
+    /* Overlaid UI Elements */
+    .reel-info {
+        position: absolute;
+        bottom: 20px;
+        left: 10px;
+        color: white;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        z-index: 2;
+    }
+
+    .reel-actions {
+        position: absolute;
+        bottom: 20px;
+        right: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: white;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        z-index: 2;
+    }
+
+    .reel-actions button, .reel-actions a { /* Include 'a' for upload button */
+        background: none;
+        /*border: none;*/
+        /*color: white;*/
+        color: #10B981;
+        border: 2px solid #10B981;
+        padding: 10px;
+        border-radius: 10px;
+        font-size: 1em;
+        margin-bottom: 10px;
+        cursor: pointer;
+        display: flex; /* Make it a flex container */
+        flex-direction: column; /* Stack icon and text vertically */
+        align-items: center; /* Center items horizontally */
+        text-decoration: none; /* Remove underline from link */
+    }
+    .reel-actions button, .reel-actions a:hover{
+        background:whitesmoke;
+    }
+
+    .reel-actions a i { /* Style the icon in the link */
+        margin-bottom: 5px; /* Add spacing between icon and text */
+    }
+    .no-videos-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        color: #888;
+    }
+
+    .no-videos-container i {
+        font-size: 3em;
+        margin-bottom: 20px;
+    }
+
+/*     tranpernt filter */
+    .filter-overlay {
+        position: absolute;
+        top: 5rem;
+        left: 50%;
+        font-size: larger;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.1);
+        padding: 10px 20px;
+        border-radius: 12px;
+        backdrop-filter: blur(2px);
+        z-index: 10;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+        .filter-overlay select,
+        .filter-overlay button {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid #10B981;
+            background-color: transparent;
+            color: #10B981;
+            font-weight: 500;
+            cursor: pointer;    
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+            .filter-overlay select:focus,
+            .filter-overlay button:hover {
+                background-color: #10B981;
+                color: white;
+            }
+                
+        .filter-overlay .reset-button {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid #10B981;
+            background-color: transparent;
+            color: #10B981;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+            .filter-overlay .reset-button:hover {
+                background-color: #10B981;
+                color: white;
+            }
+
+       /* Green Filter Button */
+.toggle-filter-btn {
+    width : 7rem;
+    position: absolute;
+
+    font-size : larger;
+    top: 5.5rem;
+    left: 40%;
+    transform: translateX(-50%);    
+    z-index: 11;
+    background-color:transparent;
+        color: #10B981;
+        border: .125em solid #10B981;
+    border-radius: 6px;
+    padding: 8px 16px;
+   
+    cursor: pointer;
+    display: none; /* hidden by default */
+
+        animation: pulseFilter 1.6s ease-in-out infinite;
+        transition: transform 0.2s ease;
+}
+
+        .toggle-filter-btn:hover {
+    transform: scale(1.05);
+}
+
+/* 🔄 Animation keyframes */
+@@keyframes pulseFilter {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+
+/* Show only button on small screen */
+  @@media(max-width: 768px) {
+    .toggle-filter-btn {
+        display: block;
+    }
+    .filter-overlay {
+        display: none;
+    }
+    .reel-info{
+            bottom: 4rem;
+    }
+
+        .reel-actions {
+            bottom: 5rem;
+
+}
+
+  
+
+
+
+</style>
+
+<!-- Trigger Button for Mobile -->
+<button class="toggle-filter-btn" id="filterMobileButton" onclick="toggleFilter()"><i class="fa fa-filter" style="margin-right: 6px;"></i>Filter</button>
+
+<!-- Filter form section -->
+<div class="filter-overlay" id="filterBox">
+    <form method="get" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+        <select name="location">
+            <option value="">All Locations</option>
+            @foreach (var loc in Model.Select(v => v.Location).Distinct())
+            {
+                <option value="@loc" selected="@(loc == Context.Request.Query["location"])">@loc</option>
+            }
+        </select>
+
+        <select name="type">
+            <option value="">All Types</option>
+            @foreach (var type in Model.Select(v => v.Type).Distinct())
+            {
+                <option value="@type" selected="@(type == Context.Request.Query["type"])">@type</option>
+            }
+        </select>
+
+        <button type="submit" onclick="hideFilter()">Apply Filter</button>
+        <a href="@Url.Action("VideoIndex", "Video")" class="reset-button">❌ Reset</a>
+    </form>
+</div>
+
+
+<div class="reels-container">
+    @if (Model.Any())
+    {
+        
+
+        foreach (var video in Model)
+        {
+            <div class="reel" style="display: none;" data-delay="@delay">
+                <video src="@Url.Content(video.FilePath)" loading="lazy" preload="none" playsinline></video>
+                <div class="reel-info">
+                    <h4>Location: @video.Location</h4>
+                    <h4>Type: @video.Type</h4>
+                    <p>@video.Description</p>
+                </div>
+                <div class="reel-actions">
+                    <a asp-controller="Video" asp-action="UploadVideo">
+                        <i class="fa-solid fa-upload"></i>
+                        Upload
+                    </a>
+                </div>
+            </div>
+
+            delay += 1000; 
+        }
+    }
+    else
+    {
+        <div class="no-videos-container">
+            <i class="fa-solid fa-video-slash"></i>
+            <p>No videos uploaded yet.</p>
+            <a asp-controller="Video" asp-action="UploadVideo" class="btn btn-primary">Upload Video</a>
+        </div>
+    }
+</div>
+
+
+<script>
+    function toggleFilter() {
+        const box = document.getElementById("filterBox");
+        const button = document.querySelector(".toggle-filter-btn");
+
+        box.style.display = "flex";     // Show the filter overlay
+        button.style.display = "none";  // Hide the Filter button
+    }
+
+    const reels = document.querySelectorAll('.reel');
+    let currentIndex = 0;
+
+    function showReel(index) {
+        reels.forEach((reel, i) => {
+            const video = reel.querySelector('video');
+
+            if (i === index) {
+                reel.classList.add('active');
+                reel.style.transform = 'translateY(0)';
+
+                // ✅ Safe video play
+                video.play().catch((e) => {
+                    console.warn("Video play failed:", e.message);
+                }); 
+            } else {
+                reel.classList.remove('active');
+                reel.style.transform = i > index ? 'translateY(100%)' : 'translateY(-100%)';
+                video.pause();
+                video.currentTime = 0;
+            }
+        });
+        document.querySelectorAll('.reel').forEach((reel) => {
+            const delay = parseInt(reel.getAttribute("data-delay")) || 0;
+            setTimeout(() => {
+                reel.style.display = "flex";
+            }, delay);
+        });
+    }
+
+    if (reels.length > 0) {
+        showReel(currentIndex);
+    }
+
+    // ✅ Swipe handling
+    let startY = 0;
+    let endY = 0;
+
+    document.querySelector('.reels-container').addEventListener('touchstart', (event) => {
+        startY = event.touches[0].clientY;
+    });
+
+    document.querySelector('.reels-container').addEventListener('touchmove', (event) => {
+        endY = event.touches[0].clientY;
+    });
+
+    document.querySelector('.reels-container').addEventListener('touchend', () => {
+        if (startY - endY > 50) {
+            currentIndex = (currentIndex + 1) % reels.length;
+            showReel(currentIndex);
+        } else if (endY - startY > 50) {
+            currentIndex = (currentIndex - 1 + reels.length) % reels.length;
+            showReel(currentIndex);
+        }
+    });
+
+    // ✅ Single tap/click toggle play/pause
+    document.querySelectorAll('video').forEach((video) => {
+        video.addEventListener('click', (event) => {
+            event.preventDefault();
+            if (video.paused) {
+                video.play().catch((e) => {
+                    console.warn("Play failed:", e.message);
+                });
+            } else {
+                video.pause();
+            }
+        });
+
+        video.addEventListener('touchend', (event) => {
+            event.preventDefault();
+            if (video.paused) {
+                video.play().catch((e) => {
+                    console.warn("Play failed on touch:", e.message);
+                });
+            } else {
+                video.pause();
+            }
+        });
+    });
+
+
+    // ✅ Keyboard navigation
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowDown') {
+            currentIndex = (currentIndex + 1) % reels.length;
+            showReel(currentIndex);
+        } else if (event.key === 'ArrowUp') {
+            currentIndex = (currentIndex - 1 + reels.length) % reels.length;
+            showReel(currentIndex);
+        } else if (event.code === 'Space') {
+            event.preventDefault();
+            const currentVideo = reels[currentIndex].querySelector('video');
+            if (currentVideo.paused) {
+                currentVideo.play().catch(() => { });
+            } else {
+                currentVideo.pause();
+            }
+        }
+    });
+
+    // ✅ Debounced mouse scroll navigation
+    let isScrolling = false;
+    document.addEventListener('wheel', (event) => {
+        if (isScrolling) return;
+        isScrolling = true;
+
+        if (event.deltaY > 0) {
+            currentIndex = (currentIndex + 1) % reels.length;
+        } else {
+            currentIndex = (currentIndex - 1 + reels.length) % reels.length;
+        }
+
+        showReel(currentIndex);
+
+        setTimeout(() => {
+            isScrolling = false;
+        }, 400);
+    });
+
+    // ✅ Click video to toggle fullscreen
+    document.addEventListener('click', (event) => {
+        if (event.target.tagName === 'VIDEO') {
+            const video = event.target;
+            if (!document.fullscreenElement) {
+                video.requestFullscreen().catch((err) => {
+                    console.error(`Fullscreen error: ${err.message}`);
+                });
+            } else if (document.fullscreenElement === video) {
+                document.exitFullscreen().catch((err) => {
+                    console.error(`Exit fullscreen error: ${err.message}`);
+                });
+            }
+        }
+    });
+
+    document.querySelectorAll('video').forEach((video) => {
+
+        video.addEventListener('click', (event) => {
+            event.preventDefault();
+            if (video.paused) {
+                video.play().catch((e) => {
+                    console.warn("Play failed:", e.message);
+                });
+            } else {
+                video.pause();
+            }
+        });
+
+        let lastTap = 0;
+        video.addEventListener('touchend', (event) => {
+            event.preventDefault();
+
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+
+            if (tapLength < 300 && tapLength > 0) {
+                return;
+            } else {
+                if (video.paused) {
+                    video.play().catch((e) => {
+                        console.warn("Play failed on touch:", e.message);
+                    });
+                } else {
+                    video.pause();
+                }
+            }
+
+            lastTap = currentTime;
+        });
+
+    });
+
+</script>

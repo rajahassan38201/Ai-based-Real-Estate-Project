@@ -1,0 +1,245 @@
+﻿@using PakProperties.ViewModels
+@model PendingApprovalsViewModel
+
+@{
+    Layout = "_AdminLayout";
+    var selectedTab = Context.Request.Query["tab"].ToString() ?? "sell";
+}
+
+
+
+@{
+    Layout = "_AdminLayout";
+}
+
+<div class="container py-4 animate__animated  animate__zoomIn">
+    <h2 class="mb-4 text-primary fw-bold">📝 Pending Property Approvals</h2>
+
+    <!-- Nav Tabs -->
+    <ul class="nav nav-tabs mb-4 animate__animated  animate__zoomIn" id="propertyTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link @(selectedTab == "sell" ? "active" : "")" id="sell-tab" data-bs-toggle="tab" data-bs-target="#sell" type="button" role="tab">Sell Properties</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link @(selectedTab == "rent" ? "active" : "")" id="rent-tab" data-bs-toggle="tab" data-bs-target="#rent" type="button" role="tab">Rent Properties</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link @(selectedTab == "video" ? "active" : "")" id="video-tab" data-bs-toggle="tab" data-bs-target="#video" type="button" role="tab">Video Properties</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="propertyTabContent">
+        <!-- Sell Tab -->
+        <div class="tab-pane fade @(selectedTab == "sell" ? "show active" : "")" id="sell" role="tabpanel">
+            <div class="card shadow mb-4">
+                <div class="card-header bg-warning text-dark fw-semibold">
+                    <i class="bi bi-house-fill me-2"></i>Pending Sell Properties
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-hover m-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Title</th>
+                                <th>City</th>
+                                <th>Posted</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var sell in Model.PendingSells)
+                            {
+                                <tr>
+                                    <td>@sell.Title</td>
+                                    <td><span class="badge bg-info text-dark">@sell.City</span></td>
+                                    <td>@sell.CreatedAt.ToShortDateString()</td>
+                                    <td>
+                                        <a asp-controller="Sell" asp-action="Detail"
+                                           asp-route-id="@sell.Id"
+                                           asp-route-returnUrl="@Url.Action("PendingPropertyApprovals", "AdminDashboard", new { tab = "sell" })"
+                                           class="btn btn-outline-dark btn-sm">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+
+                                        <button type="button" class="btn btn-sm btn-success"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#confirmModal"
+                                                data-id="@sell.Id"
+                                                data-type="sell"
+                                                data-action="approve">
+                                            <i class="bi bi-check-circle"></i> Approve
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#confirmModal"
+                                                data-id="@sell.Id"
+                                                data-type="sell"
+                                                data-action="reject">
+                                            <i class="bi bi-x-circle"></i> Reject
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rent Tab -->
+        <div class="tab-pane fade @(selectedTab == "rent" ? "show active" : "")" id="rent" role="tabpanel">
+            <div class="card shadow mb-4">
+                <div class="card-header bg-info text-white fw-semibold">
+                    <i class="bi bi-building"></i> Pending Rent Properties
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-hover m-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Title</th>
+                                <th>City</th>
+                                <th>Posted</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var rent in Model.PendingRents)
+                            {
+                                <tr>
+                                    <td>@rent.Title</td>
+                                    <td><span class="badge bg-warning text-dark">@rent.City</span></td>
+                                    <td>@rent.CreatedAt.ToShortDateString()</td>
+                                    <td>
+                                        <a asp-controller="Rent" asp-action="Detail"
+                                           asp-route-id="@rent.Id"
+                                           asp-route-returnUrl="@Url.Action("PendingPropertyApprovals", "AdminDashboard", new { tab = "rent" })"
+                                           class="btn btn-outline-dark btn-sm">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+
+                                        <button type="button" class="btn btn-sm btn-success"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#confirmModal"
+                                                data-id="@rent.Id"
+                                                data-type="rent"
+                                                data-action="approve">
+                                            <i class="bi bi-check-circle"></i> Approve
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#confirmModal"
+                                                data-id="@rent.Id"
+                                                data-type="rent"
+                                                data-action="reject">
+                                            <i class="bi bi-x-circle"></i> Reject
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video Tab -->
+        <div class="tab-pane fade @(selectedTab == "video" ? "show active" : "")" id="video" role="tabpanel">
+            <div class="card shadow mb-4">
+                <div class="card-header bg-secondary text-white fw-semibold">
+                    <i class="bi bi-camera-video"></i> Pending Video Properties
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-hover m-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Title</th>
+                                <th>City</th>
+                                <th>Posted</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var video in Model.PendingVideos)
+                            {
+                                <tr>
+                                    <td>@video.Type</td>
+                                    <td><span class="badge bg-warning text-dark">@video.Location</span></td>
+                                    <td>@video.CreatedAt.ToShortDateString()</td>
+
+                                    <td>
+                                        <a asp-controller="Video" asp-action="Detail"
+                                           asp-route-id="@video.Id"
+                                           asp-route-returnUrl="@Url.Action("PendingPropertyApprovals", "AdminDashboard", new { tab = "video" })"
+                                           class="btn btn-outline-dark btn-sm">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+
+                                        <button type="button" class="btn btn-sm btn-success"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#confirmModal"
+                                                data-id="@video.Id"
+                                                data-type="video"
+                                                data-action="approve">
+                                            <i class="bi bi-check-circle"></i> Approve
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-danger"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#confirmModal"
+                                                data-id="@video.Id"
+                                                data-type="video"
+                                                data-action="reject">
+                                            <i class="bi bi-x-circle"></i> Reject
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for confirmation -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="post" id="approvalForm">
+            <div class="modal-content">
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title" id="confirmModalLabel">Confirm Action</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to <span id="actionText" class="fw-bold"></span> this property?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Yes, Confirm</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const modal = document.getElementById('confirmModal');
+    modal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const id = button.getAttribute('data-id');
+        const type = button.getAttribute('data-type');
+        const action = button.getAttribute('data-action');
+
+        const form = document.getElementById('approvalForm');
+        const actionText = document.getElementById('actionText');
+        actionText.textContent = action === 'approve' ? 'approve' : 'reject';
+
+        const controllerAction = (type === 'sell')
+            ? (action === 'approve' ? 'ApproveSell' : 'RejectSell')
+            : (type === 'rent')
+                ? (action === 'approve' ? 'ApproveRent' : 'RejectRent')
+                : (action === 'approve' ? 'ApproveVideo' : 'RejectVideo');
+
+        const currentTab = document.querySelector('.nav-link.active').id.split('-')[0];
+        form.action = `/AdminDashboard/${controllerAction}/${id}?tab=${currentTab}`;
+    });
+</script>

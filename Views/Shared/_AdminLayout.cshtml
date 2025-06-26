@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="shortcut icon" href="~/images/icon.png">
+    <link href="~/css/Admin.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.0/css/dataTables.dataTables.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    
+
+</head>
+<body>
+
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <div id="wrapper">
+
+        <aside id="sidebar-wrapper">
+            <div class="sidebar-brand">
+                <a class="text-decoration-none" asp-controller="Home" asp-action="index"><h2>Pak Properties</h2></a>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="active">
+                    <a asp-controller="AdminDashboard" asp-action="AdminDashboard"><i class="fas fa-home"></i>  Admin Home</a>
+                </li>
+               
+                <li>
+                    <a asp-controller="Users" asp-action="Index"><i class="fa-solid fa-users"></i>  All Users</a>
+                </li>
+                <li>
+                    <a asp-controller="AdminDashboard" asp-action="PendingPropertyApprovals"><i class="fas fa-clock"></i> Pending Properties</a>
+                </li>
+
+ <li>
+                    <a asp-controller="AdminDashboard" asp-action="AllProperties"><i class="fas fa-home"></i>  Sell Properties</a>
+                </li>
+                <li>
+                    <a asp-controller="AdminDashboard" asp-action="RentProperties"><i class="fas fa-home"></i>  Rent Properties</a>
+                </li>
+
+                 
+                <li>
+                    <a asp-controller="AdminDashboard" asp-action="AllVideos"><i class="fa-solid fa-users"></i>  All Videos</a>
+                </li>
+                <li>
+                    <a asp-controller="AdminProfile" asp-action="Index"><i class="fas fa-user"></i>  My Profile</a>
+                </li>
+            </ul>
+        </aside>
+
+        <div id="navbar-wrapper">
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a href="#" class="navbar-brand" id="sidebar-toggle"><i class="fas fa-bars"></i></a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="container-fluid">
+            <main role="main" class="pb-5">
+                @RenderBody()
+            </main>
+        </div>
+
+    </div>
+
+
+    
+
+    
+    <script>
+        // Hide loader once the page is fully loaded
+        window.addEventListener('load', function () {
+            document.getElementById('loader').style.display = 'none';
+        });
+
+                const $button  = document.querySelector('#sidebar-toggle');
+        const $wrapper = document.querySelector('#wrapper');
+
+        $button.addEventListener('click', (e) => {
+          e.preventDefault();
+          $wrapper.classList.toggle('toggled');
+        });
+
+    </script>
+
+    <script src="~/js/site.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="https://cdn.datatables.net/2.1.0/js/dataTables.js"></script>
+    <script>
+        $('#myTable').DataTable();
+    </script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
